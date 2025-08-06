@@ -119,6 +119,7 @@ answer 2 allocate it to different port
 
 ![alt text](image-18.png)
 
+sudo docker volume create /data2
 
 Creating Docker Images 
 8. Login to your Docker Hub account. 
@@ -142,43 +143,17 @@ b. Create an index.html and copy it to the nginx directory
 10. Upload your image to your Docker Hub. Verify that you have the image on 
 your Docker Hub account 
 
-```bash
-admin@docker-host ✖ docker run -d -p 5000:5000 --name my-registry registry:2
-Unable to find image 'registry:2' locally
-2: Pulling from library/registry
-44cf07d57ee4: Pull complete 
-bbbdd6c6894b: Pull complete 
-8e82f80af0de: Pull complete 
-3493bf46cdec: Pull complete 
-6d464ea18732: Pull complete 
-Digest: sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
-Status: Downloaded newer image for registry:2
-85f39266c06dddae363634267070ab1bf6d91ad32d7d04f4e880edf1fedc4560
+Sign in with your Docker account
+Create an image repository on Docker Hub
+Build the container image
 
-admin@docker-host ➜  docker ps
-CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                                       NAMES
-85f39266c06d   registry:2   "/entrypoint.sh /etc…"   17 seconds ago   Up 17 seconds   0.0.0.0:5000->5000/tcp, :::5000->5000/tcp   my-registry
+build using Dockerfile
 
-admin@docker-host ➜  docker tag my-custom-image:latest localhost:5000/my-custom-image
+Push the image to Docker Hub
 
-admin@docker-host ➜  docker push localhost:5000/my-custom-image
-Using default tag: latest
-The push refers to repository [localhost:5000/my-custom-image]
-456a521541c6: Pushed 
-f17478b6e8f3: Pushed 
-0662742b23b2: Pushed 
-5c91a024d899: Pushed 
-6b1b97dc9285: Pushed 
-a6b19c3d00b1: Pushed 
-30837a0774b9: Pushed 
-7cc7fe68eff6: Pushed 
-latest: digest: sha256:9b48e2f46dbdb4dcb8892f5e82cc3c60257a64879643be622581c595e426e8c8 size: 1985
+sudo docker build . -t villagracia213/samp-images:my-app
 
-admin@docker-host ➜  curl http://localhost:5000/v2/_catalog
-{"repositories":["my-custom-image"]}
-
-```
-
+sudo docker push villagracia213/samp-images:my-app
 
 Docker Networking 
 
@@ -212,3 +187,12 @@ docker inspect nginx3 | grep -i "network"
 
 
 ![alt text](image-30.png)
+
+
+## ADDITIONAL REFERRENCE
+
+CONVERTING CONTAINER INTO IMAGE
+
+sudo docker commit [container ID] [set image tag]
+
+
