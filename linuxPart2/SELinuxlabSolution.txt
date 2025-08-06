@@ -1,0 +1,42 @@
+Lab: Kernel Runtime Parameters and SELinux
+
+Adjust the value of this kernel runtime parameter, vm.swappiness, to 10.
+
+After you set this to 10, also make the change persistent so that it will be auto-set to this value on the next reboot.
+
+
+sudo vi /etc/sysctl.conf
+
+Add below given code in this file and save it:
+
+vm.swappiness=10
+
+sudo sysctl -p
+
+
+--------------------------
+Change the SELinux context of /var/index.html file to httpd_sys_content_t
+
+
+Use below given command:
+
+sudo chcon -t httpd_sys_content_t /var/index.html
+
+
+
+----------------------------
+
+
+Temporarily change the SELinux status to Permissive on this system.
+
+
+Execute below given command:
+
+
+sudo setenforce 0
+
+------------------------
+
+Identify the SELinux Roles for xguest_u SELinux user and save the value(s) in /home/bob/serole file.
+
+sudo semanage user -l

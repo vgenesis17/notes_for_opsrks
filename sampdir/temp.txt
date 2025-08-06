@@ -1,0 +1,9 @@
+This text is a brief description of the features that are present in the Bash shell (version 5.2, 19 September 2022). The Bash home page is http://www.gnu.org/software/bash/.
+
+This is edit 5.2, last updated 19 September 2022, of The GNU Bash Reference Manual, for Bash, Version 5.2.
+ad@DESKTOP-3KE0KU4:~$ ./test1.sh 5.2 5.200
+All occurrences of '5.2' replaced with '5.200' in 'temp.txt'.
+ad@DESKTOP-3KE0KU4:~$ cat temp.txt
+This text is a brief description of the features that are present in the Bash shell (version 5.200, 19 September 2022). The Bash home page is http://www.gnu.org/software/bash/.
+
+This is edit 5.200, last updated 19 September 2022, of The GNU Bash Reference Manual, for Bash, Version 5.200.

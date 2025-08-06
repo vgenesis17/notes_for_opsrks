@@ -1,0 +1,1 @@
+s/(World|Line)/Hello/g

@@ -1,0 +1,5 @@
+id,Created,Amount,Currency,Description,Customer
+1,2024-11-01,100,USD,Payment,John Doe
+2,2024-11-02,200,EUR,Refund,Jane Smith
+3,2024-11-03,150,USD,Purchase,Emily Davis
+4,2024-11-04,175,GBP,Subscription,Michael Brown
