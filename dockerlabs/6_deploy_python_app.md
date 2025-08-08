@@ -25,11 +25,16 @@ curl http://localhost:8095/
 
 ``` FROM python:3.6-alpine
 
-
+# makes the folder for the installations
 WORKDIR /app
 
+# COPY requirements for so  we can do pip install
 COPY src/requirements.txt /app/
+
+# RUN pip install
 RUN pip install -r requirements.txt
+
+# copy src folder to app folder remaining files (server.py)
 
 COPY src/ /app/
 
