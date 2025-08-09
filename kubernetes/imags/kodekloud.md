@@ -1,6 +1,7 @@
 Cluster Architecture 
 
-	 ![alt text](image.png)
+![alt text](image-104.png)
+![alt text](image-105.png)
 
 ETCD clusters- a database that stores infos in a key-value format
 
@@ -365,16 +366,122 @@ Imperative vs Declarative approach
 ![alt text](image-102.png)
 
 
+Imperative approach
+- use this to save some time like creating pods or deployments
+
+![alt text](image-106.png)
+
+
+
+Declarative approach 
+ ![alt text](image-107.png)
+
+ ![alt text](image-108.png)
+ 
 
  
- 
-Doesn’t need yaml file but its difficult when its complex
- 
-![alt text](image-103.png)
+
+![alt text](image-109.png)
+
+
+json is stored un the annotations:
+![alt text](image-110.png)
 
 
 
 
+kubectl run --help
+
+Options:
+    --allow-missing-template-keys=true:
+        If true, ignore any errors in templates when a field or map key is missing in the template. Only applies to
+        golang and jsonpath output formats.
+
+    --annotations=[]:
+        Annotations to apply to the pod.
+
+    --attach=false:
+        If true, wait for the Pod to start running, and then attach to the Pod as if 'kubectl attach ...' were called.
+        Default false, unless '-i/--stdin' is set, in which case the default is true. With '--restart=Never' the exit
+        code of the container process is returned.
+
+    --command=false:
+        If true and extra arguments are present, use them as the 'command' field in the container, rather than the
+        'args' field which is the default.
+
+    --dry-run='none':
+        Must be "none", "server", or "client". If client strategy, only print the object that would be sent, without
+        sending it. If server strategy, submit server-side request without persisting the resource.
+
+    --env=[]:
+        Environment variables to set in the container.
+
+    --expose=false:
+        If true, create a ClusterIP service associated with the pod.  Requires `--port`.
+
+    --field-manager='kubectl-run':
+        Name of the manager used to track field ownership.
+
+    --image='':
+        The image for the container to run.
+
+    --image-pull-policy='':
+        The image pull policy for the container.  If left empty, this value will not be specified by the client and
+        defaulted by the server.
+
+    -l, --labels='':
+        Comma separated labels to apply to the pod. Will override previous values.
+
+    --leave-stdin-open=false:
+        If the pod is started in interactive mode or with stdin, leave stdin open after the first attach completes. By
+        default, stdin will be closed after the first attach completes.
+
+    -o, --output='':
+        Output format. One of: (json, yaml, name, go-template, go-template-file, template, templatefile, jsonpath,
+        jsonpath-as-json, jsonpath-file).
+
+    --override-type='merge':
+        The method used to override the generated object: json, merge, or strategic.
+
+    --overrides='':
+        An inline JSON override for the generated object. If this is non-empty, it is used to override the generated
+        object. Requires that the object supply a valid apiVersion field.
+
+    --pod-running-timeout=1m0s:
+        The length of time (like 5s, 2m, or 3h, higher than zero) to wait until at least one pod is running
+
+    --port='':
+        The port that this container exposes.
+
+    --privileged=false:
+        If true, run the container in privileged mode.
+
+    -q, --quiet=false:
+        If true, suppress prompt messages.
+
+    --restart='Always':
+        The restart policy for this Pod.  Legal values [Always, OnFailure, Never].
+
+    --rm=false:
+        If true, delete the pod after it exits.  Only valid when attaching to the container, e.g. with '--attach' or
+        with '-i/--stdin'.
+
+    --save-config=false:
+        If true, the configuration of current object will be saved in its annotation. Otherwise, the annotation will
+        be unchanged. This flag is useful when you want to perform kubectl apply on this object in the future.
+
+    --show-managed-fields=false:
+        If true, keep the managedFields when printing objects in JSON or YAML format.
+
+    -i, --stdin=false:
+        Keep stdin open on the container in the pod, even if nothing is attached.
+
+    --template='':
+        Template string or path to template file to use when -o=go-template, -o=go-template-file. The template format
+        is golang templates [http://golang.org/pkg/text/template/#pkg-overview].
+
+    -t, --tty=false:
+        Allocate a TTY for the container in the pod.
 
 
 
