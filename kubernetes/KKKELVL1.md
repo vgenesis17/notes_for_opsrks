@@ -136,17 +136,121 @@ Note: The kubectl utility on jump_host is configured to interact with the Kubern
 
 
 ``` bash
+
+#check the history first
 kubectl rollout history deployement nginx-deployment
 
+
+# run to undo rollout
 kubectl rollout undo deployment nginx-deployment
 
 
 kubectl rollout status deployment nginx-deployment 
 
+```
+------------------------------------------------------------------------------
+### REPLICASET
+
+The Nautilus DevOps team is gearing up to deploy applications on a Kubernetes cluster for migration purposes. A team member has been tasked with creating a ReplicaSet outlined below:
+
+
+
+Create a ReplicaSet using nginx image with latest tag (ensure to specify as nginx:latest) and name it nginx-replicaset.
+
+
+Apply labels: app as nginx_app, type as front-end.
+
+
+Name the container nginx-container. Ensure the replica count is 4.
+
+
+Note: The kubectl utility on jump_host is set up to interact with the Kubernetes cluster.
+
+
+``` yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replicaset
+  labels: 
+    app: nginx_app
+    type: front-end
+spec:
+  replicas: 4
+  selector:
+    matchLabel:
+      app: nginx_app
+      type: front-end  
+    template:
+      metadata:
+        labels:
+          app: nginx_app
+          type: front-end
+      spec:
+        containers:
+          name: nginx-container
+          image: nginx:latest
+
+```
+
+## cronJob
+
+
+The Nautilus DevOps team is setting up recurring tasks on different schedules. Currently, they're developing scripts to be executed periodically. To kickstart the process, they're creating cron jobs in the Kubernetes cluster with placeholder commands. Follow the instructions below:
+
+
+
+Create a cronjob named xfusion.
+
+
+Set Its schedule to something like */12 * * * *. You can set any schedule for now.
+
+
+Name the container cron-xfusion.
+
+
+Utilize the httpd image with latest tag (specify as httpd:latest).
+
+
+Execute the dummy command echo Welcome to xfusioncorp!.
+
+
+Ensure the restart policy is OnFailure.
+
+
+Note: The kubectl utility on jump_host is configured to work with the kubernetes cluster.
+
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: xfusion
+spec:
+  schedule: "*/12 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cron-xfusion
+            image: httpd:latest
+            command: ["echo", "Welcome to xfusioncorp!"]
+          restartPolicy: OnFailure
 
 
 ```
 
 
+The Nautilus DevOps team is crafting jobs in the Kubernetes cluster. While they're developing actual scripts/commands, they're currently setting up templates and testing jobs with dummy commands. Please create a job template as per details given below:
 
 
+Create a job named countdown-devops.
+
+The spec template should be named countdown-devops (under metadata), and the container should be named container-countdown-devops
+
+Utilize image fedora with latest tag (ensure to specify as fedora:latest), and set the restart policy to Never.
+
+Execute the command sleep 5
+
+Note: The kubectl utility on jump_host is set up to operate with the Kubernetes cluster.
