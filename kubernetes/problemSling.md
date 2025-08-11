@@ -41,3 +41,55 @@ kubectll get pod all --selector env=prod
 ## Which node is the POD mosquito on now?
 
 Run the command kubectl get pods -o wide and look at the Node column.
+
+
+
+
+
+
+
+
+
+---
+Set Node Affinity to the blue deployment to place the pods on node01 only.
+
+Ensure that node01 has the label color=blue.
+
+Requirements:
+
+Use requiredDuringSchedulingIgnoredDuringExecution node affinity
+Key: color
+Value: blue
+
+If the label is not already set, apply it to node01 before updating the deployment.
+
+``` yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+      affinity:            # affinity rules added from here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: color
+                operator: In
+                values:
+                - blue
+
+```
