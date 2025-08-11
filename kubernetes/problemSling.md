@@ -19,6 +19,10 @@ pod "new-replica-set-gj2cb" deleted
 pod "new-replica-set-pnt8d" deleted
 pod "new-replica-set-vjskc" deleted
 
+### Remove the taint on controlplane, which currently has the taint effect of NoSchedule.
+
+
+Run the command: kubectl taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-
 
 
 
@@ -26,7 +30,8 @@ pod "new-replica-set-vjskc" deleted
 
 
 
-How many objects are in the prod environment including PODs, ReplicaSets and any other objects?
+
+### How many objects are in the prod environment including PODs, ReplicaSets and any other objects?
 
 
 kubectll get pod all --selector env=prod
