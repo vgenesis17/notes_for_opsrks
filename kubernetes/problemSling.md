@@ -35,3 +35,9 @@ Run the command: kubectl taint nodes controlplane node-role.kubernetes.io/contro
 
 
 kubectll get pod all --selector env=prod
+
+
+
+## Which node is the POD mosquito on now?
+
+Run the command kubectl get pods -o wide and look at the Node column.
