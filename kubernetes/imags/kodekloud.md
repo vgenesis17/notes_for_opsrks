@@ -483,7 +483,8 @@ Options:
     -t, --tty=false:
         Allocate a TTY for the container in the pod.
 
-
+DAEMONSET - ensure their is running instance of an app in all nodes
+Static pods - created directly on kubelet with  no use of api server 
 
 
 
