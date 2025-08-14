@@ -254,3 +254,73 @@ Utilize image fedora with latest tag (ensure to specify as fedora:latest), and s
 Execute the command sleep 5
 
 Note: The kubectl utility on jump_host is set up to operate with the Kubernetes cluster.
+
+
+
+
+
+
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: time-check
+  namespace: nautilus
+spec:
+  containers:
+    - name: time-check
+      image: busybox:latest
+      command: ["/bin/sh", "-c"]
+      args:
+        - while true; do date >> /opt/data/time/time-check.log; sleep $TIME_FREQ; done
+      env:
+        - name: TIME_FREQ
+          valueFrom:
+            configMapKeyRef:
+              name: time-config
+              key: TIME_FREQ
+      volumeMounts:
+        - name: log-volume
+          mountPath: /opt/data/time
+  volumes:
+    - name: log-volume
+      emptyDir: {}
+
+
+###### We encountered an issue with our Nginx and PHP-FPM setup on the Kubernetes cluster this morning, which halted its functionality. Investigate and rectify the issue:
+
+
+
+The pod name is nginx-phpfpm and configmap name is nginx-config. Identify and fix the problem.
+
+
+Once resolved, copy /home/thor/index.php file from the jump host to the nginx-container within the nginx document root. After this, you should be able to access the website using Website button on the top bar.
+
+
+Note: The kubectl utility on jump_host is configured to operate with the Kubernetes cluster.
+
+answer :
+```bash
+thor@jumphost ~$ kubectl logs nginx-phpfpm -c nginx-container
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2025/08/12 13:07:55 [error] 80#80: *1 directory index of "/var/www/html/" is forbidden, client: 10.244.0.1, server: _, request: "GET / HTTP/1.1", host: "30008-port-l7hscmek7dj7jrfn.labs.kodekloud.com", referrer: "https://l7hscmek7dj7jrfn.labs.kodekloud.com/"
+10.244.0.1 - - [12/Aug/2025:13:07:55 +0000] "GET / HTTP/1.1" 403 555 "https://l7hscmek7dj7jrfn.labs.kodekloud.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+thor@jumphost ~$ kubectl logs nginx-phpfpm -c php-fpm-container
+[12-Aug-2025 12:56:43] NOTICE: fpm is running, pid 1
+[12-Aug-2025 12:56:43] NOTICE: ready to handle connections
+```
+
+
+
