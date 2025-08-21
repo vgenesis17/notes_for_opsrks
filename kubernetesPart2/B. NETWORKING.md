@@ -301,6 +301,44 @@ Executing nslookUp to mysql from hr pod
 k exec -it -- nslookup mysql.payroll  
 ```
 
+Where is the configuration file located for configuring the CoreDNS service?
+```bash
+kubectl -n kube-system describe deployments.apps coredns | grep -A2 Args | grep Corefile
+```
+
+How is the Corefile passed into the CoreDNS POD?
+
+configured in configMap
+
+
+What is the root domain/zone configured for this kubernetes cluster?
+```bash
+
+kubectl describe configmap coredns -n kube-system
+```
+What name can be used to access the hr web server from the test Application?
+
+You can execute a curl command on the test pod to test. Alternatively, the test Application also has a UI. Access it using the tab at the top of your terminal named test-app.
+
+web-service
+
+
+Which of the names CANNOT be used to access the HR service from the test pod?
+
+web-service.pod
+
+
+Which of the below name can be used to access the payroll service from the test application?
+
+web-service.payroll
+
+
+We just deployed a web server - webapp - that accesses a database mysql - server. However the web server is failing to connect to the database server. Troubleshoot and fix the issue.
+
+
+They could be in different namespaces. First locate the applications. The web server interface can be seen by clicking the tab Web Server at the top of your terminal.
+
+set ENV value to web.payroll
 
 ## INGRESS 
 
@@ -566,3 +604,42 @@ k create ingress ingress-wear \
 and then turn the 2nd rule to false
 
 
+To know the Network configured in the cluster you should count the identical pods . If more than 1 
+
+
+
+
+What is the IP Range configured for the services within the cluster?
+```bash
+cat /etc/kubernetes/manifests/kube-apiserver.yaml   | grep cluster-ip-range
+
+```
+
+-------------------------------------------------------------------------------------------------
+
+Let us now deploy an Ingress Controller. First, create a namespace called ingress-nginx.
+
+
+We will isolate all ingress related objects into its own namespace.
+
+Run the command: kubectl create namespace ingress-nginx
+
+nginx-controller should have a namespace , configMaps and service accounts
+
+
+The NGINX Ingress Controller requires a ConfigMap object. Create a ConfigMap object with name ingress-nginx-controller in the ingress-nginx namespace.
+
+
+
+No data needs to be configured in the ConfigMap.
+
+6 / 8
+Let us now deploy the Ingress Controller. Create the Kubernetes objects using the given file.
+
+
+The Deployment and it's service configuration is given at /root/ingress-controller.yaml. There are several issues with it. Try to fix them.
+
+
+1. deployment 
+2. expose to a service 
+3. set the ingress

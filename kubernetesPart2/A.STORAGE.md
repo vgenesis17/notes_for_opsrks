@@ -108,6 +108,43 @@ What is the name of the Storage Class that does not support dynamic volume provi
 : Look for the storage class name that uses no-provisioner
 
 
+
+
+
+Create a new PersistentVolumeClaim named local-pvc with the following configuration:
+
+StorageClass: local-path
+Access Mode: ReadWriteOnce
+Requested Storage: 500Mi
+Do not use the volumeName field in the PVC.
+
+
+Note: If the persistent volume claim (PVC) is in a Pending state, disregard it and proceed to the next task.
+
+```yaml
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 500Mi
+```
+
+
+Create a new pod called nginx with the image nginx:alpine. The Pod should make use of the PVC local-pvc and mount the volume at the path /var/www/html.
+
+
+The PVC local-pvc should be in a bound state
+
+
+
+
 Create a new Storage Class called delayed-volume-sc that makes use of the below specs:
 
 provisioner: kubernetes.io/no-provisioner
