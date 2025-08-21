@@ -12,7 +12,7 @@ Here’s the link to the documentation:
 
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
-
+----------------------------------------------------------------------------------------------------------
 
 Install the kubeadm and kubelet packages on the controlplane and node01 nodes.
 Use the exact version of 1.33.0-1.1 for both.
@@ -145,15 +145,17 @@ W0520 03:05:34.890872   11137 checks.go:846] detected that the sandbox image "re
 [kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
 [addons] Applied essential addon: CoreDNS
 [addons] Applied essential addon: kube-proxy
-
+```
+------------------------------------------------------------------------------------------------------
 Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
+```bash
 
   mkdir -p $HOME/.kube
   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
+```
 Alternatively, if you are the root user, you can run:
 
   export KUBECONFIG=/etc/kubernetes/admin.conf
@@ -164,19 +166,14 @@ Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
 
 Then you can join any number of worker nodes by running the following on each as root:
 
+
+``` bash
 kubeadm join 192.168.9.95:6443 --token 50bd8b.x003t0tq1fzmultg \
         --discovery-token-ca-cert-hash sha256:70a59cdbfc5f5a3f0d49ca90198525870da1fe6f02def53d80a2c00fcc4bde72
 ```
 
 
 
-## Once the command has been run successfully, set up the kubeconfig:
-```bash
-mkdir -p $HOME/.kube
-
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 ## Generate a kubeadm join token
 
@@ -223,7 +220,7 @@ curl -LO https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentat
 ```bash
 net-conf.json: |
     {
-      "Network": "10.244.0.0/16", # Update this to match the custom PodCIDR
+      "Network": "10.244.0.0/16", # Update this to match the custom PodCIDR (in the k describe node)
       "Backend": {
         "Type": "vxlan"
       }
@@ -238,7 +235,7 @@ net-conf.json: |
   - --ip-masq
   - --kube-subnet-mgr
 ```
-5. Add the additional argument - --iface=eth0 to the existing list of arguments.
+5. Add the additional argument ```bash - --iface=eth0 ``` to the existing list of arguments.
 
 
 6. Now apply the modified manifest kube-flannel.yml file using kubectl:

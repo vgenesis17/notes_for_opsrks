@@ -228,6 +228,7 @@ kind: PersistentVolume
 metadata:
   name: sample-pv
 spec:
+  persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 1Gi                  # Storage capacity
   accessModes:
