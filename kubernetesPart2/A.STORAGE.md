@@ -162,3 +162,40 @@ provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 ```
 
+if the status of of pv is still available or release
+
+```bash
+
+kubectl patch pv my-pv -p '{"spec":{"claimRef": null}}'
+
+```
+
+
+Init container:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-init
+spec:
+  volumes:
+    - name: shared-data
+      emptyDir: {}   # Shared volume between initContainer and main container
+
+  initContainers:
+    - name: init-mydata
+      image: busybox
+      command: ["sh", "-c", "echo 'Hello from initContainer!' > /data/message.txt"]
+      volumeMounts:
+        - name: shared-data
+          mountPath: /data
+
+  containers:
+    - name: main-container
+      image: busybox
+      command: ["sh", "-c", "cat /data/message.txt && sleep 3600"]
+      volumeMounts:
+        - name: shared-data
+          mountPath: /data
+````
