@@ -1,0 +1,1 @@
+https://notes.kodekloud.com/docs/CKA-Certification-Course-Certified-Kubernetes-Administrator/Networking/Solution-Explore-DNS-optional
