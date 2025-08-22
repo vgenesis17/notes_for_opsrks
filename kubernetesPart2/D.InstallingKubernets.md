@@ -38,7 +38,12 @@ sudo sysctl --system
 The container runtime has already been installed on both nodes, so you may skip this step.
 Install kubeadm, kubectl and kubelet on all nodes:
 
+pre-request:
+```bash
+sudo dnf clean all
+sudo dnf makecache
 
+```
 ```bash
 sudo apt-get update
 
@@ -235,7 +240,7 @@ net-conf.json: |
   - --ip-masq
   - --kube-subnet-mgr
 ```
-5. Add the additional argument ```bash - --iface=eth0 ``` to the existing list of arguments.
+5. Add the additional argument ``` - --iface=eth0 ``` to the existing list of arguments.
 
 
 6. Now apply the modified manifest kube-flannel.yml file using kubectl:
@@ -275,3 +280,240 @@ NAME           STATUS   ROLES           AGE   VERSION
 controlplane   Ready    control-plane   15m   v1.33.0 
 node01         Ready    <none>          15m   v1.33.0
 ```
+
+
+-----------------------------------
+### FOR CENTOS
+```bash
+sudo rm /etc/yum.repos.d/kubernetes.repo 
+
+```
+
+
+```bash
+sudo tee /etc/yum.repos.d/kubernetes.repo <<EOF
+[kubernetes]
+name=Kubernetes
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.33/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.33/rpm/repodata/repomd.xml.key
+EOF
+```
+
+
+```bash
+sudo dnf clean all
+sudo dnf makecache
+
+```
+
+
+```bash
+sudo dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+```
+```bash
+sudo systemctl enable --now kubelet
+
+```
+
+
+
+
+## boostrap using kubeadm
+
+Initialize Control Plane Node (Master Node). Use the following options:
+
+
+apiserver-advertise-address - Use the IP address allocated to eth0 on the controlplane node
+
+apiserver-cert-extra-sans - Set it to controlplane
+
+pod-network-cidr - Set to 172.17.0.0/16
+
+service-cidr - Set to 172.20.0.0/16
+
+Once done, set up the default kubeconfig file and wait for node to be part of the cluster.
+
+### You can use the below kubeadm init command to spin up the cluster:
+
+```bash
+IP_ADDR=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+kubeadm init --apiserver-cert-extra-sans=controlplane --apiserver-advertise-address $IP_ADDR --pod-network-cidr=172.17.0.0/16 --service-cidr=172.20.0.0/16
+```
+
+
+--------------if firewalld issue arise or CPU requirements device needed--------------------------------------
+
+
+
+1. failed to create new CRI runtime service: ... unknown service runtime.v1.RuntimeService
+
+```bash
+sudo dnf install -y containerd.io
+
+sudo mkdir -p /etc/containerd
+sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+sudo systemctl enable --now containerd
+
+```
+
+2. [WARNING Firewalld]: firewalld is active
+sudo firewall-cmd --permanent --add-port=6443/tcp
+sudo firewall-cmd --permanent --add-port=10250/tcp
+sudo firewall-cmd --reload
+
+3. [WARNING Swap]: swap is supported for cgroup v2 only ...
+sudo swapoff -a
+sudo sed -i.bak '/\sswap\s/s/^/#/' /etc/fstab
+
+
+4. [ERROR NumCPU]: the number of available CPUs 1 is less than the required 2
+change the cpu settings (applicable if you have the physical server)
+
+
+5. registry error: 
+sudo vi /etc/containerd/config.toml
+sandbox_image = "registry.k8s.io/pause:3.10"
+
+sudo systemctl restart containerd
+
+
+manual pulling (optional): sudo ctr -n k8s.io images pull registry.k8s.io/pause:3.10
+                           sudo systemctl restart containerd
+
+
+check: kubeadm config images list
+
+
+
+
+
+
+
+
+
+
+
+
+
+sudo vi /etc/containerd/config.toml
+
+sandbox_image = "registry.k8s.io/pause:3.10"
+
+run it again :
+
+                       # change the enp03 from ip addr
+IP_ADDR=$(ip addr show enp0s3| grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+kubeadm init --apiserver-cert-extra-sans=controlplane --apiserver-advertise-address $IP_ADDR --pod-network-cidr=172.17.0.0/16 --service-cidr=172.20.0.0/16
+--------------------------------------------------------------------
+
+
+
+
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+```bash
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+## pod Network installation
+
+To install a network plugin, we will go with Flannel as the default choice. For inter-host communication, we will utilize the eth0 interface and update the Network field accordingly.
+
+Ensure that the Flannel manifest includes the appropriate options for this configuration.
+
+
+For detailed instructions, refer to the official documentation linked in the upper right corner above the terminal.
+
+
+
+
+ On the controlplane node, run the following set of commands to deploy the network plugin:
+
+1. Download the original YAML file and save it as kube-flannel.yml:
+
+```bash
+curl -LO https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
+
+```
+
+
+2. Open the kube-flannel.yml file using a text editor.
+
+3. We are using a custom PodCIDR (172.17.0.0/16) instead of the default 10.244.0.0/16 when bootstrapping the Kubernetes cluster. However, the Flannel manifest by default is configured to use 10.244.0.0/16 as its network, which does not align with the specified PodCIDR. To resolve this, we need to update the Network field in the kube-flannel-cfg ConfigMap to match the custom PodCIDR defined during cluster initialization.
+
+
+```bash
+net-conf.json: |
+    {
+      "Network": "10.244.0.0/16", # Update this to match the custom PodCIDR (in the k describe node)
+      "Backend": {
+        "Type": "vxlan"
+      }
+
+```
+
+4. Locate the args section within the kube-flannel container definition. It should look like this:
+
+
+```bash
+  args:
+  - --ip-masq
+  - --kube-subnet-mgr
+```
+5. Add the additional argument ```bash - --iface=eth0 ``` to the existing list of arguments.
+
+
+6. Now apply the modified manifest kube-flannel.yml file using kubectl:
+```bash
+kubectl apply -f kube-flannel.yml
+```
+monitor the pod status
+```bash
+watch kubectl get pods -A
+```
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+
+``` bash
+kubeadm join 192.168.9.95:6443 --token 50bd8b.x003t0tq1fzmultg \
+        --discovery-token-ca-cert-hash sha256:70a59cdbfc5f5a3f0d49ca90198525870da1fe6f02def53d80a2c00fcc4bde72
+```
+
+
+
+```
+## Generate a kubeadm join token
+
+## Or copy the one that was generated by kubeadm init command
+
+```bash
+kubeadm token create --print-join-command
+```
+
+### Join node01 to the cluster using the join token
+
+```bash
+kubeadm join 192.168.9.95:6443 --token ag7ei8.n0afe8vwgnredqqq --discovery-token-ca-cert-hash sha256:70a59cdbfc5f5a3f0d49ca90198525870da1fe6f02def53d80a2c00fcc4bde72 
+```
+
+
+
+
