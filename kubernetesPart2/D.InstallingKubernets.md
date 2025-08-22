@@ -282,6 +282,58 @@ node01         Ready    <none>          15m   v1.33.0
 ```
 
 
+
+----isssues might arise in UBUNTU --------------------------
+containerD install:
+```bash
+sudo apt update
+sudo apt install -y containerd
+
+# Generate default config
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+
+# Enable systemd cgroups
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+# Restart containerd
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+
+```
+
+```bash
+cat <<EOF | sudo tee /etc/sysctl.d/kubernetes.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward = 1
+EOF
+sudo sysctl --system
+
+```
+```bash
+sudo swapoff -a
+sudo sed -i.bak '/ swap / s/^\(.*\)$/#\1/' /etc/fstab
+```
+
+
+
+```bash
+
+sudo kubeadm reset -f
+sudo rm -rf /etc/kubernetes/*
+sudo systemctl restart kubelet
+
+
+
+````
+
+IN WORKER NODES:
+
+kubadm join 
+________________________________________________
+
+
 -----------------------------------
 ### FOR CENTOS
 ```bash
