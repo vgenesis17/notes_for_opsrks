@@ -11,7 +11,7 @@ git branch -a
 git checkout feature
 git log --oneline
 git checkout master
-git cherry-pick <commit_hash>
+git cherry-pick <commit_hash from the merfing branch (feature)>
 git add .
 git cherry-pick --continue
 git push origin master
