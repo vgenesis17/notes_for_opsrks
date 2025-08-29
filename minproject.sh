@@ -8,6 +8,7 @@ jq -n --arg name "$name" --arg shift "$shift" --arg team "$team" '{  "shift": $s
 
 
 
-
-
+jq '.shift' employee_records/*
+jq '.team' employee_records/*
+jq '.name' employee_records/*
 
