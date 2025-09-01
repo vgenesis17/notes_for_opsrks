@@ -76,3 +76,19 @@ services:
 
 
 ```
+
+
+```yaml
+
+```docker-compose.yml
+version: "3"
+services:
+  web:
+    container_name: group5-mini-project
+    image: php:apache
+    ports:
+        - 8089:80
+    volumes:
+        - /var/www/html:/var/www/html
+
+```

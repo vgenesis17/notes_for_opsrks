@@ -61,7 +61,7 @@ sudo git config --global user.name "Josip"
 sudo git config --global user.email "Josip@example.com"
 
 sudo git init --bare /opt/blog.git
-
+Strawhatluffy_30
 sudo cp /tmp/update /opt/blog.git/hooks/
 ```bash
 [natasha@ststor01 ~]$ cat /tmp/update
