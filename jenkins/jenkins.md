@@ -56,3 +56,54 @@ pipeline {
     }
 }
 ```
+
+
+
+We have a pipeline job named go-test but its incomplete.
+
+Complete the same by adding the required stages/steps as per details mentioned below:
+
+
+1. Clone a git repository.
+
+git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+
+
+
+2. Run a shell command go test ./...
+
+
+sh 'go test ./...'
+
+
+
+Login into the Jenkins server and follow the below given steps:
+
+
+1. Click on go-test job.
+
+2 Open the job configuration by clicking on Configure button.
+
+3. Under the pipeline section, complete the Script and the final code should look like as below
+
+answer :
+
+pipeline {
+    agent {
+        label {
+            label 'master'
+            customWorkspace "${JENKINS_HOME}/${BUILD_NUMBER}/"
+        }
+    }
+    environment {
+        Go111MODULE='on'
+    }
+    stages {
+        stage('Test') {
+            steps {
+                git 'https://github.com/kodekloudhub/go-webapp-sample.git'
+                sh 'go test ./...'
+            }
+        }
+    }
+}
