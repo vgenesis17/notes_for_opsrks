@@ -1,0 +1,27 @@
+
+# For stapp01
+sshpass -p 'Ir0nM@n' ssh -o 'StrictHostKeyChecking=no' -t tony@stapp01 \
+"echo 'Ir0nM@n' | sudo -S bash -c 'yum install httpd -y && sed -i \"s/Listen 80/Listen 8080/g\" /etc/httpd/conf/httpd.conf && systemctl enable --now httpd'"
+
+# For stapp02
+sshpass -p 'Am3ric@' ssh -o 'StrictHostKeyChecking=no' -t steve@stapp02 \
+"echo 'Am3ric@' | sudo -S bash -c 'yum install httpd -y && sed -i \"s/Listen 80/Listen 8080/g\" /etc/httpd/conf/httpd.conf && systemctl enable --now httpd'"
+
+# For stapp03
+sshpass -p 'BigGr33n' ssh -o 'StrictHostKeyChecking=no' -t banner@stapp03 \
+"echo 'BigGr33n' | sudo -S bash -c 'yum install httpd -y && sed -i \"s/Listen 80/Listen 8080/g\" /etc/httpd/conf/httpd.conf && systemctl enable --now httpd'"
+
+
+
+
+
+
+
+
+sshpass -p Ir0nM@n ssh -o 'StrictHostKeyChecking=no' -t tony@stapp01 'echo "Ir0nM@n" | sudo -S yum install git wget telnet net-tools zip -y'
+
+sshpass -p Am3ric@ ssh -o 'StrictHostKeyChecking=no' -t steve@stapp02 'echo "Am3ric@" | sudo -S yum install git wget telnet net-tools zip -y'
+
+sshpass -p BigGr33n ssh -o 'StrictHostKeyChecking=no' -t banner@stapp03 'echo "BigGr33n" | sudo -S yum install git wget telnet net-tools zip -y'
+
+sshpass -p Bl@kW ssh -o 'StrictHostKeyChecking=no' -t natasha@ststor01 echo "Bl@kW" | sudo -S yum install -y java && sudo -S chown -R natasha '/var/www/html'
