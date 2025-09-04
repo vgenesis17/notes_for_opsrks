@@ -1,0 +1,33 @@
+pipeline {
+     agent {
+        label 'stapp01'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Clone repo (Dockerfile already exists there)
+                    git branch: 'master', url: 'http://git.stratos.xfusioncorp.com/sarah/web.git'
+
+                    // Build Docker image
+                    sh '''
+                        docker build -t stregi01.stratos.xfusioncorp.com:5000/node-app:latest .
+                        docker push stregi01.stratos.xfusioncorp.com:5000/node-app:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh '''
+                        # Run new container with port mapping
+                        docker run -d --name node-app -p 8080:8080 stregi01.stratos.xfusioncorp.com:5000/node-app:latest
+                    '''
+                }
+            }
+        }
+    }
+}

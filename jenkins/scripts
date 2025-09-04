@@ -13,10 +13,9 @@ sshpass -p 'BigGr33n' ssh -o 'StrictHostKeyChecking=no' -t banner@stapp03 \
 
 
 
-
-
-
-
+sudo yum install httpd -y
+sudo sed -i 's/Listen 80/Listen 8080/g' /etc/httpd/conf/httpd.conf
+sudo systemctl enable --now httpd
 
 sshpass -p Ir0nM@n ssh -o 'StrictHostKeyChecking=no' -t tony@stapp01 'echo "Ir0nM@n" | sudo -S yum install git wget telnet net-tools zip -y'
 

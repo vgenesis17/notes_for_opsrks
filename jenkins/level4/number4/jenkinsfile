@@ -1,0 +1,30 @@
+pipeline {
+    agent {
+        label 'ststor01'
+    }
+    stages {
+        stage('Deploy') {
+            steps {
+                script {
+                    // Clone latest code from repo into Storage Server
+                    sh '''
+                    sshpass -p 'Bl@kW' ssh -o StrictHostKeyChecking=no natasha@ststor01 "
+                        cd /var/www/html && git pull origin master
+                    "
+                    '''
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Run a curl test against the LBR
+                    sh '''
+                    curl -f http://stlb01:8091 | grep "Welcome to xFusionCorp Industries"
+                    '''
+                }
+            }
+        }
+    }
+}
