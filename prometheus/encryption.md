@@ -82,6 +82,8 @@ Add below lines in it:
 
 
 ```yaml
+basic_auth_users:
+  prometheus:$2y$10$rcFqcMDjx.Pp6YZyGxR/qe8KAlvB2zhdqKvpYbPJg.9WX/ht2SbRO
 
 ```
 Restart node_exporter service
@@ -106,17 +108,91 @@ curl -u prometheus:secret-password http://node02:9100/metrics
 
 Now, let's configure the Prometheus server to use authentication when scraping metrics from node servers.
 
-Edit the Prometheus configuration file
-
+### Edit the Prometheus configuration file
+```bash
 vi /etc/prometheus/prometheus.yml
+```
 Under - job_name: "nodes" add below lines:
 ```yaml
 basic_auth:
   username: prometheus
   password: secret-password
-Restart prometheus service:
 ```
+### Restart prometheus service:
+
 ```bash
 systemctl restart prometheus
-
 ```
+
+6 / 9
+Configure node exporter to use TLS on both nodes i.e node01 and node02. You can generate a certificate and key using the below command:
+```bash
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=US/ST=California/L=Oakland/O=MyOrg/CN=localhost" -addext "subjectAltName = DNS:localhost"
+```
+
+Note: You should be able to SSH into node01 and node02 through user root (without any password) from prometheus-server. Once you SSH into any node (for example node01) and you are done with your changes, remember to exit from that node (i.e node01) before SSH into the another node (i.e node02).
+
+
+
+SSH to node01
+
+ssh root@node01
+Generate the certificate and key
+
+openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=US/ST=California/L=Oakland/O=MyOrg/CN=localhost" -addext "subjectAltName = DNS:localhost"
+Move the crt and key file under /etc/node_exporter/ directory
+
+mv node_exporter.crt node_exporter.key /etc/node_exporter/
+Change ownership:
+
+chown node_exporter.node_exporter /etc/node_exporter/node_exporter.key
+chown node_exporter.node_exporter /etc/node_exporter/node_exporter.crt
+Edit /etc/node_exporter/config.yml file:
+
+
+Edit /etc/node_exporter/config.yml file:
+
+vi /etc/node_exporter/config.yml
+Add below lines in this file:
+
+tls_server_config:
+  cert_file: node_exporter.crt
+  key_file: node_exporter.key
+Restart node exporter service:
+
+systemctl restart node_exporter
+exit
+You can verify your changes using curl command:
+
+curl -u prometheus:secret-password -k https://node01:9100/metrics
+Follow same steps for node02
+
+
+### ERROR: 400
+Let's configure Prometheus server to use HTTPS for scraping the node_exporter. Find below more details:
+
+
+  (a) Copy the certificate from node_exporter to the prometheus server.
+  (b) Update prometheus config to use https for node_exporter
+  (c) Make sure to add insecure_skip_verify: true since we are using a self signed certificate
+  (d) Finally restart the prometheus service.
+
+## #--------------------------------------------------
+Copy the certificate from node01 to Prometheus server
+
+scp /etc/node_exporter/node_exporter.crt root@prometheus-server:/etc/prometheus/node_exportercrt
+Change certificate file ownership:
+
+chown prometheus.prometheus /etc/prometheus/node_exporter.crt
+Edit /etc/prometheus/prometheus.yml file
+
+vi /etc/prometheus/prometheus.yml 
+Add below given lines under - job_name: "nodes"
+
+    scheme: https
+    tls_config:
+      ca_file: /etc/prometheus/node_exporter.crt
+      insecure_skip_verify: true
+Restart prometheus service
+
+systemctl restart prometheus
