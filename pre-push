@@ -1,0 +1,17 @@
+tricted branches
+RESTRICTED_BRANCHES=("main" "develop")
+
+# Get the branch being pushed
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Check if the branch is restricted
+for branch in "${RESTRICTED_BRANCHES[@]}"; do
+  if [ "$current_branch" == "$branch" ]; then
+      echo "❌ Push to '$branch' is restricted. Please push to a different branch."
+          exit 1
+	    fi
+	    done
+
+	    # Allow the push if no restrictions apply
+	    exit 0
+
