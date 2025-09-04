@@ -140,3 +140,113 @@ Construct a query to calculate the percentage of bytes that failed for each endp
 ```bash
 http_upload_failed_bytes_total*100 / ignoring(error) group_left http_uploaded_bytes_total
 ```
+
+
+### Function, subqueiries
+There are three jobs configured in Prometheus: multimedia, auth, and api. Construct a Prometheus query to fetch the node_cpu_seconds_total metric for all jobs and sort the results in ascending order. Save this query to the file /root/ascending.txt.
+
+```bash
+sort(node_cpu_seconds_total)
+```
+
+### 2
+Construct a Prometheus query that returns the metric node_memory_Active_bytes for all jobs, and sorts the results in descending order. Save this query to the /root/descending.txt file
+
+```yaml
+ sort_desc( node_memory_Active_bytes)
+```
+
+
+### 3
+
+Calculate the percentage of free space for all filesystems on all instances under all jobs using the following query:
+
+node_filesystem_avail_bytes * 100 / node_filesystem_size_bytes
+
+Note: The resulting percentages may have several decimal places.
+
+
+Now, modify the query to use the round function to round the result to the nearest integer. Save the final rounded query in the /root/percentage.txt file.
+
+```bash
+round(node_filesystem_avail_bytes * 100 / node_filesystem_size_bytes)
+```
+
+### 5
+
+Management wants to monitor the rate of bytes received by each instance. Since each instance has two network interfaces, the rate of incoming traffic must be combined (summed) for all interfaces per instance.
+
+Calculate the rate of received bytes using the node_network_receive_bytes_total metric and a 2-minute window.
+
+Sum the rates for all interfaces and group the result by instance.
+
+Save the final query in /root/traffic.txt.
+
+```bash
+sum by(instance)(rate(node_network_receive_bytes_total[2m]))
+```
+### 09
+findind request with greater than 0.08 s latency but less than 0.1 s
+
+count(http_request_total_bucket{instance="node01:3000",le="0.1"}) - ignoring (le) count(http_request_total_bucket{instance="node02:3000",le="0.08"})
+
+### 10
+
+Construct a PromQL query that calculates the per-second rate of HTTP requests (using a 1-minute window) whose latency was less than 0.08 seconds, across all nodes.
+
+
+Use the bucket for le="0.08" in your selector to include all requests that completed in less than or equal to 0.08 seconds.
+
+Apply the rate() function to the selected time series over a 1-minute window.
+
+Save your query in the file /root/rate.txt.
+
+
+### 11
+Construct a PromQL query to calculate the average latency of a request over the past 4 minutes.
+
+Use the metric http_request_total_sum, which contains the sum of all request latencies, and http_request_total_count, which contains the total number of requests.
+rate of sum-of-all-requests / rate of count-of-all-requests
+
+Save your query in /root/request_sum.txt.
+
+
+
+rate(http_request_total_sum[4m]) / rate(http_request_total_count[4m])
+
+
+### 12
+
+Management would like to know the 95th percentile latency for HTTP requests received by node node01:3000.
+The application exposes latencies as a Prometheus histogram metric named http_request_total_bucket.
+
+Construct a PromQL query using the histogram_quantile function to calculate the 95th percentile latency on node01:3000.
+Save your query in /root/quantile.txt.
+
+
+histogram_quantile(0.95, http_request_total_bucket{instance="node01:3000"})
+
+### 13
+
+
+The company is now offering customers an SLO stating that, 95% of all requests will be under 0.15s. What bucket size will need to be added to guarantee that the histogram_quantile function can accurately report whether or not that SLO has been met?
+
+Bucket size which needs to be added to guarantee that the histogram_quantile function can accurately report whether or not that SLO is met is 0.15.
+
+
+A summary metric http_upload_bytes has been added to track the amount of bytes uploaded per request. What are percentiles being reported by this metric?
+
+
+
+
+
+(B) 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.99
+### 15
+
+The application exposes uploaded bytes as a Prometheus summary metric named http_upload_bytes, which reports quantiles via a quantile label.
+
+Construct a PromQL query to retrieve the 90th percentile quantile="0.9" of uploaded bytes for node node01:3000.
+
+Save your query in /root/percentile.txt.
+
+http_upload_bytes{instance="node01:3000", quantile="0.9"}
