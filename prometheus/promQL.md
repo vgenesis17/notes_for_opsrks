@@ -250,3 +250,93 @@ Construct a PromQL query to retrieve the 90th percentile quantile="0.9" of uploa
 Save your query in /root/percentile.txt.
 
 http_upload_bytes{instance="node01:3000", quantile="0.9"}
+
+
+
+## RECORDING RULES
+
+
+Create a recording rule to track the rate at which a node is receiving traffic. Find below more details:
+
+
+
+  (a) Create a file called node-rules.yaml under /etc/prometheus directory.
+
+
+  (b) Update this file to:
+
+
+        (i) Create a group called node, this group should have all the rules for node_exporters.
+
+
+        (ii) Set the interval for the rules to run every 15s.
+
+
+        (iii) Add a record called node_network_receive_bytes_rate.
+
+
+        (iv) The expression should be rate(node_network_receive_bytes_total{job="nodes"}[2m])
+
+
+  (c) Finally, update the prometheus.yml file to import rules from node-rules.yaml file and restart the prometheus service.
+
+
+
+
+
+  ###ans
+vi /etc/prometheus/node-rules.yaml
+  ```yaml
+groups:
+  - name: node
+    interval: 15s
+    rules:
+      - record: node_network_receive_bytes_rate
+        expr: rate(node_network_receive_bytes_total{job="nodes"}[2m])
+
+  ```
+
+  vi /etc/prometheus/prometheus.yml
+
+Edit /etc/prometheus/prometheus.yml file:
+
+
+Add below line under rule_files: section:
+
+```yaml
+  - "node-rules.yaml"
+```
+most important:
+```bash
+systemctl restart prometheus
+```
+
+access the rule health
+
+
+
+We can avoid updating the prometheus.yml file every time for adding a new rule file we create by making use of globs. Update the prometheus.yml file so that it look like below:
+
+
+
+rule_files:
+  - "*rules.yaml"
+
+
+
+
+This will import all files that have prefix rules.yaml. Finally, restart theprometheus service.
+
+
+vi /etc/prometheus/prometheus.yml
+
+
+
+Change rule_files: section so that it looks like below:
+
+ans: 
+```yaml
+rule_files:
+  - "*rules.yaml"
+```
+
