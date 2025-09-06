@@ -2,3 +2,15 @@ gvillagracia-a1t-pe-cnm1	139.162.62.167
 
 
 bastion-1.acad.opswerks.net	103.3.60.119	user=gvillagracia	password=Acad_student-gvillagracia
+
+
+http://172.104.183.231:8080/
+
+
+first instance
+
+gvillagracia-a2t-pe-cid1a	172.104.183.231	gvillagracia
+
+second instance 
+
+gvillagracia-a2t-pe-cid1b	139.162.11.172	gvillagracia

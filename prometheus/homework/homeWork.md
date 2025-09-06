@@ -31,3 +31,15 @@ o Identify the targets Prometheus is currently scraping.
 o Open the Prometheus UI and inspect how many targets are in an unhealthy state.
 
 ![alt text](image-3.png)
+
+
+7. cpu usage 
+
+cpu_usage{instance="localhost:9091" ,  job = "Pushgateway"}
+
+
+8. 
+
+memory_usage{instance="localhost:9091" ,  job = "Pushgateway"}
+
+9. 
