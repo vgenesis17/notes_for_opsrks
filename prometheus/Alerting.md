@@ -247,3 +247,7 @@ Restart prometheus service:
 ``bash
 systemctl restart prometheus
 ```
+
+```
+
+### AlertManage.yaml config
