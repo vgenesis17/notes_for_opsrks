@@ -43,3 +43,19 @@ cpu_usage{instance="localhost:9091" ,  job = "Pushgateway"}
 memory_usage{instance="localhost:9091" ,  job = "Pushgateway"}
 
 9. 
+!["rules"](image-4.png)
+
+10. 
+
+![alt text](image-5.png)
+
+11
+
+12
+
+13.
+![alt text](image-7.png)
+![alt text](image-6.png)
+
+
+
