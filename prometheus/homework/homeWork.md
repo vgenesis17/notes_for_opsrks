@@ -46,7 +46,6 @@ memory_usage{instance="localhost:9091" ,  job = "Pushgateway"}
 !["rules"](image-4.png)
 
 10. 
-
 ![alt text](image-5.png)
 
 11

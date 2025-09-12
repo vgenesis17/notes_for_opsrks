@@ -14,3 +14,96 @@ gvillagracia-a2t-pe-cid1a	172.104.183.231	gvillagracia
 second instance 
 
 gvillagracia-a2t-pe-cid1b	139.162.11.172	gvillagracia
+
+
+
+
+/promql/t2
+
+count(kube_deployment_created) by (prometheus)
+
+3
+count(kube_pod_info) by (prometheus)
+
+count(kube_pod_info{namespace="prometheus"}) by (pod)
+
+
+Get the count of Kubernetes nodes using the metric kube_node_info
+
+
+count(kube_node_info)
+
+6
+count(kube_deployment_created{namespace="ingress-nginx"})
+
+7
+
+
+8
+kube_pod_info{namespace="ingress-nginx"}
+
+9
+Get the memory resource limit of Pods in the node kind-worker using metric kube_pod_container_resource_limits
+
+kube_pod_container_resource_limits{node="kind-worker", resource="memory"}
+
+10
+
+Sort memory requests in descending order using kube_pod_container_resource_requests metric
+
+sort_desc(kube_pod_container_resource_requests{resource="memory"})
+
+
+11
+sort_desc(kube_pod_container_resource_requests{resource="cpu"})
+12
+sort(kube_pod_container_resource_requests{resource="memory"})
+
+
+13
+
+sort(kube_pod_container_resource_requests{resource="cpu"})
+
+14
+
+kube_pod_info{pod=~"ingress-.*"}
+
+15 
+kube_pod_info{namespace="prometheus", pod=~"ingress-.*"}'
+
+
+16 Get ALL Pods either in Running OR Pending state using metric kube_pod_status_phase
+kube_pod_status_phase{phase="Running"} or kube_pod_status_phase{phase="Pending"} 
+
+
+
+17 Get ALL Pods in Running phase UNLESS it is in Failed phase using metric kube_pod_status_phase
+kube_pod_status_phase{phase="Running"} unless kube_pod_status_phase{phase="Failed"} 
+
+
+18
+
+container_memory_usage_bytes > 536870912
+
+
+19
+
+container_memory_usage_bytes / 1024
+
+
+20
+container_cpu_user_seconds_total{namespace="ingress-nginx"} [5m]
+
+
+21
+Get the absolute value of resource type memory of kube_pod_container_resource_limits less (minus) memory of kube_pod_container_resource_requests
+
+
+abs(kube_pod_container_resource_limits{resource="memory} -  kube_pod_container_resource_requests{resource="memory"})
+
+
+container_cpu_usage_seconds_total{namespace="prometheus"} offset 1h
+
+
+
+:
