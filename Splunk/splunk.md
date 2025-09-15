@@ -452,4 +452,130 @@ index=web soourcetype="access_combined" | stats count(ZipCode) as “Events with
 
 ###  stats Command - distinct_Count(dc) Fucntion
 
-to get the count of the unque values for a given field
+To get the count of the unque values for a given field
+
+• Count the unique number of values in the failureCode field within the last 24hrs.
+
+index=web soourcetype="access_combined" | stats distinct_count(zipCode) 
+
+• Rename the count as “Number of Unique Failures”.
+```bash
+index=web soourcetype="access_combined" | stats distinct_count(zipCode) as "Number of unque zipCode"
+```
+
+###  stats Command – sum & avg - Demo
+
+• Calculate the total duration of calls (in seconds) by partner, for calls with 
+responseCode=200, in last 4hrs. 
+```bash
+index=web sourcetype="access_combined" responseCode=200 | stats sum(duration ) as TotalCallTime by partner 
+```
+set the time to 4 hrs
+
+• Round to seconds by removing the millisecond fraction. 
+```bash
+index=web sourcetype="access_combined" responseCode=200 
+| stats sum(duration ) as TotalCallTime 
+| eval TotalCallTime=round(TotalCallTime)
+
+```
+
+
+• Convert the total time to Hours:Mins:Secs using the tostring function.
+```bash
+index=web sourcetype="access_combined" responseCode=200 
+| stats sum(duration ) as TotalCallTime 
+| eval TotalCallTime=round(TotalCallTime)
+| eval "TotalCallTime"=tostring(TotalCallTime, "duration" )
+```
+
+• Calculate the average duration of calls (in seconds) by partner, for calls with 
+responseCode=200, in last 4hrs. 
+
+```bash
+index=web sourcetype="access_combined" responseCode=200 
+| stats avg(duration ) as AvgCallTime by partner
+
+```
+
+
+
+• Round to a precision of 2
+```bash
+index=web sourcetype="eventgen" responseCode=200 
+| stats avg(duration ) as AvgCallTime by partner 
+| eval TotalCallTime=round(AvgCallTime, 2)
+```
+# Stats list and values
+
+
+• List the values of responseCode over the last 4hrs. Rename this field as 
+“Response Codes”.
+index=web sourcetype="eventgen" | stats list(responseCode)
+as “Response Codes”
+
+• List unique values of responseCode over the last 4hrs. Rename this field as 
+“Unique Response Codes”
+
+index=web sourcetype="eventgen" | stats values(responseCode)
+as “Unique Response Codes”
+## Combining functions :
+
+Use stats functions to calculate the following and group by partner within the last 4 hrs:
+• Count of all events as “Total Events”.
+
+• Count of all events with zip code as “Total Events with Zipcode”.
+• Unique number of zip codes as “Number of Zip Codes”.
+• Total duration as TotalCallTime, average duration as AvgCallTime.
+• Convert TotalCallTime to HH:MM:SS and round average duration to precision of 2
+
+
+index=web sourcetype="eventgen" | stats count as "Total Events", count(zipCode) as "Total Events with Zipcode", dc(zipCode) as "Number of Zip Codes", sum(duration) as TotalCallTime, avg(duration) as AvgCallTime by partner 
+| eval TotalCallTime=tostring(round(TotalCallTime), "duration"),AvgCallTime=round(AvgCallTime, 2)
+
+
+
+### TOP COMMAND
+
+• Display statistics for the top 20 response codes in last 4hrs:
+
+
+
+✓ Change the query to display statistics for all field values.
+✓ Rename count field to “Count by Response Code”.
+✓ Change to query to remove the percent field.
+
+index=web sourcetype="eventgen" 
+| top limit=20 responseCode countfield=“Count by Response Code” showperc=f
+
+• Display the count and percentage of top 3 failure codes for each partner in the last 4hrs.
+
+index=web sourcetype="eventgen" 
+| top limit=3 failureCode 
+
+
+✓ Change the query to display statistics for all failure codes.
+• Display the count and percentage of events for each partner, nodeName combination in 
+last 4hrs
+
+index=web sourcetype="eventgen" 
+| top limit=0 partner,nodeName
+
+
+## rare commands OR least common values field
+
+• Display the count and percentage of the 3 least common response codes in the last 4hrs.
+
+
+index=web sourcetype="eventgen" 
+| rare limit=3 responseCode 
+
+
+• Display the count and percentage of the least common device MAC addresses for 
+nodeName host07. 
+
+
+
+✓Limit to least common 5 MAC addresses. 
+✓Rename count as “Count of Least MAC”
+
