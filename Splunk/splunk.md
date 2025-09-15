@@ -567,15 +567,60 @@ index=web sourcetype="eventgen"
 • Display the count and percentage of the 3 least common response codes in the last 4hrs.
 
 
-index=web sourcetype="eventgen" 
+index=main sourcetype="eventgen" 
 | rare limit=3 responseCode 
 
 
 • Display the count and percentage of the least common device MAC addresses for 
 nodeName host07. 
 
+index=main sourcetype="eventgen"  nodeName=host07
+| rare deviceMac
 
 
 ✓Limit to least common 5 MAC addresses. 
+
+index=main sourcetype="eventgen"  nodeName=host07
+| rare limit=5 deviceMac 
+
 ✓Rename count as “Count of Least MAC”
 
+index=main sourcetype="eventgen"  nodeName=host07
+| rare limit=5 deviceMac countfield=“Count of Least MAC” 
+
+
+
+### Formatting statistical tables 
+
+
+Open the fields window for the partner field on the fields sidebar:
+• Click on the “Top Values” report and select the statistics tab.
+• Add row numbers to the table.
+• Change the data overlay to heatmap for both columns.
+• Add a row with Totals.
+• Remove all settings added above.
+• On the partner column, add color type as Values.
+• On the count column, add Thousand Separators and use a precision of 0.
+• On the percent column, change the precision to 0 and add % as unit after the field value.
+• Click values in the statistics table to demonstrate drilldowns
+
+
+
+
+### Formatting Visualizations
+
+On the “Top values” visualization for partner field:
+• Change the visualization type to column chart, pie chart, scatter chart, bubble chart, to 
+see how the different options look.
+• Change back to bar chart.
+• Turn on data labels to see the value of each bar.
+• Turn on min/max to see values for maximum and minimum bars.
+• Change the Y-axis title to “Count of Response Codes”.
+
+format>Y-Axess>title>custom
+
+• On Y-axis, switch on/off number abbreviations to see the behavior.
+• On Y-axis set the minimum value to 7,500 to see only bars with count greater than this 
+value. Restore to optional.
+• Move chart legend from right to top.
+• Click on bars on the chart to demonstrate drilldown
