@@ -384,7 +384,10 @@ index=web soourcetype="access_combined" | table JSESSIONID, clientip, useragent,
 index=web soourcetype="access_combined" | table JSESSIONID, clientip, useragent, referer, bytes | rename  JSESSIONID as sessioID, clientip as "User IP Address" | sort - "User IP Address", bytes 
 ```
 
-### dedup command 
+• Count the total number of events in eventgen sourcetype in last 24hrs.
+• Rename the count as “Total Events”:
+✓ Group by nodeName field.
+✓ Group by nodeName and partner fields.
 
 deduplication remove duplicates
 
@@ -406,5 +409,47 @@ used to order search results into statistical table
 index=web soourcetype="access_combined" | stats count by clientip
 
 ```
+```bash
+index=web sourcetype="access_combined" | stats count(eval(responseCode==480)) as "Events with 480 Error"
+```
+visusalization tab
 
-visusalixation tab
+count 
+Counts the number of events
+USe count() to count the number of events matching the argument
+
+distict_count,dc-count the number fir a specifieds
+
+stats function 
+
+sum, avg , values (list all unique field)
+
+list all values of the given field
+
+grou by  npdeName 
+
+
+• Count the total number of events in eventgen sourcetype in last 24hrs.
+• Rename the count as “Total Events”:
+```bash
+index=web soourcetype="access_combined" | stats count | rename count  as "Total events"
+```
+
+✓ Group by nodeName field.
+```bash
+index=web soourcetype="access_combined" | stats count as "Total evens" by nodeName
+```
+
+✓ Group by nodeName and partner fields.
+```bash
+index=web soourcetype="access_combined" | stats count as "Total events" by nodeName, partner
+```
+
+• Count the number of events containing the zipCode field and name as “Events with ZipCode”
+
+index=web soourcetype="access_combined" | stats count(ZipCode) as “Events with ZipCode” 
+
+
+###  stats Command - distinct_Count(dc) Fucntion
+
+to get the count of the unque values for a given field
