@@ -1,8 +1,8 @@
 ### APLICATION FAILURE
-![alt text](image-39.png)
+![alt text](images/image-39.png)
 
 
-![alt text](image-40.png)
+![alt text](images/image-40.png)
 
 
 check if the target port is right 
@@ -11,10 +11,10 @@ check if the target port is right
 
 
 ## CONTROL PLANE FAILURE
-![alt text](image-41.png)
-![alt text](image-42.png)
+![alt text](images/image-41.png)
+![alt text](images/image-42.png)
 
-![alt text](image-44.png)
+![alt text](images/image-44.png)
 
 
 
@@ -428,7 +428,7 @@ Selector:       k8s-app=kube-proxy
 ...
   Containers:
    kube-proxy:
-    Image:      registry.k8s.io/kube-proxy:v1.26.0
+    Images/image:      registry.k8s.io/kube-proxy:v1.26.0
     Port:       <none>
     Host Port:  <none>
     Command:

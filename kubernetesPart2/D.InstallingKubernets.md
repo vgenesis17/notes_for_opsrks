@@ -1,7 +1,7 @@
-![alt text](image-37.png)
+![alt text](images/image-37.png)
 
 
-![alt text](image-38.png)
+![alt text](images/image-38.png)
 
 
 The vagrant file used in the next video is available here:
@@ -92,10 +92,10 @@ Once you run the init command, you should see an output similar to below:
 [init] Using Kubernetes version: v1.33.1
 [preflight] Running pre-flight checks
         [WARNING SystemVerification]: cgroups v1 support is in maintenance mode, please migrate to cgroups v2
-[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] Pulling images/images required for setting up a Kubernetes cluster
 [preflight] This might take a minute or two, depending on the speed of your internet connection
-[preflight] You can also perform this action beforehand using 'kubeadm config images pull'
-W0520 03:05:34.890872   11137 checks.go:846] detected that the sandbox image "registry.k8s.io/pause:3.6" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.10" as the CRI sandbox image.
+[preflight] You can also perform this action beforehand using 'kubeadm config images/images pull'
+W0520 03:05:34.890872   11137 checks.go:846] detected that the sandbox images/image "registry.k8s.io/pause:3.6" of the container runtime is inconsistent with that used by kubeadm.It is recommended to use "registry.k8s.io/pause:3.10" as the CRI sandbox images/image.
 [certs] Using certificateDir folder "/etc/kubernetes/pki"
 [certs] Generating "ca" certificate and key
 [certs] Generating "apiserver" certificate and key
@@ -428,16 +428,16 @@ change the cpu settings (applicable if you have the physical server)
 
 5. registry error: 
 sudo vi /etc/containerd/config.toml
-sandbox_image = "registry.k8s.io/pause:3.10"
+sandbox_images/image = "registry.k8s.io/pause:3.10"
 
 sudo systemctl restart containerd
 
 
-manual pulling (optional): sudo ctr -n k8s.io images pull registry.k8s.io/pause:3.10
+manual pulling (optional): sudo ctr -n k8s.io images/images pull registry.k8s.io/pause:3.10
                            sudo systemctl restart containerd
 
 
-check: kubeadm config images list
+check: kubeadm config images/images list
 
 
 
@@ -453,7 +453,7 @@ check: kubeadm config images list
 
 sudo vi /etc/containerd/config.toml
 
-sandbox_image = "registry.k8s.io/pause:3.10"
+sandbox_images/image = "registry.k8s.io/pause:3.10"
 
 run it again :
 
