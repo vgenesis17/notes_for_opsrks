@@ -19,3 +19,11 @@ sudo docker network create nlog \
 
 verify: 
 sudo docker network ls
+
+
+can't delete a pod.
+if you can't delete a pod its a kublet !!!!
+got to /etc/kubernetes/connf.d/kubelet.yaml
+
+
+

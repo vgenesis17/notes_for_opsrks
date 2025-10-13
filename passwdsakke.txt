@@ -1,0 +1,11 @@
+Server Name	IP		User	Password	Purpose
+stapp01	172.16.238.10		tony	Ir0nM@n	Nautilus App 1
+stapp02	172.16.238.11		steve	Am3ric@	Nautilus App 2
+stapp03	172.16.238.12		banner	BigGr33n	Nautilus App 3
+stlb01	172.16.238.14		loki	Mischi3f	Nautilus HTTP LBR
+stdb01	172.16.239.10		peter	Sp!dy	Nautilus DB Server
+ststor01	172.16.238.15	natasha	Bl@kW	Nautilus Storage Server
+stbkp01	172.16.238.16		clint H@wk3y3	Nautilus Backup Server
+stmail01	172.16.238.17	groot	Gr00T123	Nautilus Mail Server
+jump_host	Dynamic		thor	mjolnir123	Jump Server to Access Stork DC
+jenkins	172.16.238.19		jenkins	j@rv!s	Jenkins Server for CI/CD

@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Clone repo
+                    git url: 'http://git.stratos.xfusioncorp.com/sarah/mr_job.git', branch: 'master'
+
+                    // Build image
+                    sh """
+                        docker build -t stregi01.stratos.xfusioncorp.com:5000/nginx:latest .
+                        docker push stregi01.stratos.xfusioncorp.com:5000/nginx:latest
+                    """
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Remove old container if exists
+                    sh """
+                        docker rm -f nginx-app || true
+                        docker run -d --name nginx-app -p 8080:80 stregi01.stratos.xfusioncorp.com:5000/nginx:latest
+                    """
+                }
+            }
+        }
+    }
+}
