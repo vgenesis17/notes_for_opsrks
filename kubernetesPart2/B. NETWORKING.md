@@ -1,13 +1,11 @@
 ### NETWORKING
 
     
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 
-![alt text](image-3.png)
-
-
-![alt text](image-4.png)
+![alt text](images/image-3.png)
+![alt text](images/image-4.png)
 
 CONTAINER NETWORK INTERFACE 
 
@@ -15,12 +13,12 @@ CONTAINER NETWORK INTERFACE
 -programs = plugins
 
 
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 
 
 
 
-![CNI](image-7.png)
+![CNI](images/image-7.png)
 
 
 What is the network interface configured for cluster connectivity on the controlplane node?
@@ -62,31 +60,31 @@ what port has many client connection
 netstat -anp | grep 2379 | wc -l
 
 NETWORK MODEL:
-![alt text](<Screenshot 2025-08-11 at 6.14.45 PM.png>)
+![alt text](<Images/Images/Screenshot 2025-08-11 at 6.14.45 PM.png>)
 
 
 
 
-![alt text](<Screenshot 2025-08-11 at 6.14.45 PM-1.png>)
+![alt text](<Images/Images/Screenshot 2025-08-11 at 6.14.45 PM-1.png>)
 
 
 connecting nodes
 
-![alt text](<Screenshot 2025-08-11 at 6.14.45 PM-2.png>)
+![alt text](<Images/Screenshot 2025-08-11 at 6.14.45 PM-2.png>)
 
-![alt text](<Screenshot 2025-08-11 at 6.14.45 PM-3.png>)
+![alt text](<Images/Screenshot 2025-08-11 at 6.14.45 PM-3.png>)
 
 pod network 
-![alt text](<Screenshot 2025-08-11 at 6.14.45 PM-4.png>)
+![alt text](<Images/Screenshot 2025-08-11 at 6.14.45 PM-4.png>)
 
 CNI 
-![CNI](<Screenshot 2025-08-11 at 6.14.45 PM-5.png>)
+![CNI](<Images/Screenshot 2025-08-11 at 6.14.45 PM-5.png>)
 
-![CNI CONFIG](<Screenshot 2025-08-11 at 6.14.45 PM-6.png>)
+![CNI CONFIG](<Images/Screenshot 2025-08-11 at 6.14.45 PM-6.png>)
 
 CNI STANDARD 
 
-![standard](<Screenshot 2025-08-11 at 6.14.45 PM-7.png>)
+![standard](<Images/Screenshot 2025-08-11 at 6.14.45 PM-7.png>)
 
 
 
@@ -134,9 +132,9 @@ Look at the type field in file /etc/cni/net.d/10-flannel.conflist
 
 ### IPAM (IP MANAGEMENT)
 
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
-![alt text](image-9.png)
+![alt text](images/image-9.png)
 
 
 
@@ -183,20 +181,20 @@ kube-proxy
 
 how they get ip addresses:
 
-![alt text](image-10.png)
+![alt text](images/image-10.png)
 
 how to make network policies:
 
-![kubeproxy](image-11.png)
+![kubeproxy](images/image-11.png)
 
 
 
-![iptables](image-13.png)
+![iptables](images/image-13.png)
 
-![alt text](image-14.png)
+![alt text](images/image-14.png)
 
 
-![alt text](image-15.png)
+![alt text](images/image-15.png)
 
 
 
@@ -249,10 +247,10 @@ kube dns
 k expose pod <podName> --port=2001
 
 creates subdomains on Namespace 
-![alt text](image-16.png)
+![alt text](images/image-16.png)
 for pods replaces . with -
 
-![alt text](image-17.png)
+![alt text](images/image-17.png)
 
 ### HOW kubernetes Implements DNS ??
 
@@ -268,13 +266,13 @@ cat >> /etc/resolv.conf
 
 In kubernetes 
 ./Coredns == cat /etc/coredns/Corefile
-![alt text](image-18.png)
+![alt text](images/image-18.png)
 
 
 kublet creates the config-file automatically
 k get service -n kube-system
 
-![alt text](image-19.png)
+![alt text](images/image-19.png)
 
 Identify the DNS solution implemented in this cluster.
 Run the command: kubectl get pods -n kube-system and look for the DNS pods.
@@ -344,7 +342,7 @@ set ENV value to web.payroll
 
 1. Deploy supported solution
 Ingress Controller 
-![alt text](image-20.png)
+![alt text](images/image-20.png)
 
 GCP and nginx are the once who are supported
 
@@ -352,24 +350,24 @@ GCP and nginx are the once who are supported
 
 Ingress Resources
 
-![alt text](image-21.png)
+![alt text](images/image-21.png)
 
-![alt text](image-22.png)
+![alt text](images/image-22.png)
 
 always check the documentation for the ingress
 
-![alt text](image-23.png)
+![alt text](images/image-23.png)
 
-![alt text](image-24.png)
+![alt text](images/image-24.png)
 
-![alt text](image-25.png)
+![alt text](images/image-25.png)
 
-![alt text](image-26.png)
+![alt text](images/image-26.png)
 
 
 traffic watch:
 
-![alt text](image-27.png)
+![alt text](images/image-27.png)
 
 ### Imperative :
 
