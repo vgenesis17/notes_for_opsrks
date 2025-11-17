@@ -35,3 +35,32 @@ spec:
     - name: shared-volume
       emptyDir: {}
 ```
+
+
+
+```bash
+kubectl -n admin2406 get deployment -o custom-columns=DEPLOYMENT:.metadata.name,CONTAINER_IMAGE:.spec.template.spec.containers[].image,READY_REPLICAS:.status.readyReplicas,NAMESPACE:.metadata.namespace --sort-by=.metadata.name > /opt/admin2406_data
+```
+
+```bash
+kubectl cluster-info --kubeconfig /root/CKA/admin.kubeconfig
+```
+
+ake a help of command etcdctl snapshot save --help options.
+```bash
+export ETCDCTL_API=3
+etcdctl snapshot save --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/
+```
+
+```bash
+
+Use the command kubectl run to create a pod definition file. Add secret volume and update container name in it.
+
+Alternatively, run the following command:
+
+kubectl run secret-1401 -n admin1401 --image=busybox --dry-run=client -oyaml --command -- sleep 4800 > admin.yaml
+
+Add the secret volume and mount path to create a pod called secret-1401 in the admin1401 namespace as follows:
+
+
+```
